@@ -1,0 +1,14 @@
+.DS_Store
+logs
+*.log
+npm-debug.log*
+coverage
+node_modules
+lib
+es
+esdoc
+dev
+distsos
+dist
+stats.prod.sos.json
+.etmp

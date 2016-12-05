@@ -1,0 +1,9 @@
+{
+  "name": "webpack2-module",
+  "version": "1.0.0",
+  "main": "./src/index.js",
+  "license": "MIT",
+  "dependencies": {
+    "moment": "^2.17.1"
+  }
+}
