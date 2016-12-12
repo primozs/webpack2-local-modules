@@ -1,0 +1,12 @@
+{
+  "name": "example-static",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "lite-server -c config.json"
+  },
+  "devDependencies": {
+    "lite-server": "2.2.2"
+  }
+}

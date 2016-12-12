@@ -2,14 +2,15 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
-  devtool: 'inline-source-map',
+  devtool: 'eval',
+  context: path.resolve('src'),
   entry: [
     'webpack-dev-server/client?http://localhost:3000',
     'webpack/hot/only-dev-server',
-    './src/app.js'
+    './app.js'
   ],
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.resolve('dist'),
     filename: 'app.js',
     publicPath: '/'
   },
@@ -45,9 +46,6 @@ module.exports = {
             require.resolve('babel-preset-react'),
             require.resolve('babel-preset-stage-0'),
             require.resolve('babel-preset-react-hmre')
-          ],
-          ignore: [
-            '/node_modules/'
           ]
         }
       },
@@ -58,6 +56,12 @@ module.exports = {
     ]
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify('development'),
+        'CLIENT': JSON.stringify('true')
+      }
+    }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin()
   ],

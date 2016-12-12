@@ -8,17 +8,14 @@ import AsyncComponent from './AsyncComponent';
 import scheduleLoad from './scheduleLoad';
 
 const loader = (cb) => {
-  // System.import('./MapView').then((MapView) => {
-  //   cb(MapView.default);
-  // });
-  require.ensure([], (require) => {
-    cb(require('./Time'));
+  System.import('./Time').then((Time) => {
+    cb(Time);
   });
 };
 
-if (process.env.CLIENT) {
-  scheduleLoad(loader);
-}
+// if (process.env.CLIENT) {
+//   scheduleLoad(loader);
+// }
 
 const TimeAsync = (props) => {
   return (

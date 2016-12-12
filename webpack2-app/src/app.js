@@ -6,3 +6,8 @@ require('./style.scss');
 
 let rootEl = document.getElementById('root');
 ReactDom.render(<Time />, rootEl);
+
+if (process.env.NODE_ENV === 'production') {
+  const { install } = require('offline-plugin/runtime');
+  install();
+}

@@ -1,14 +1,17 @@
 {
   "name": "webpack2-react",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "app.js",
   "license": "MIT",
   "scripts": {
-    "clean_prod": "rm -rf ./dist && mkdir dist && cp ./src/public/prod.html ./dist/index.html",
+    "clean_prod": "rm -rf ./dist && mkdir dist",
     "clean_dev": "rm -rf ./dist && mkdir dist && cp ./src/public/index.html ./dist/index.html",
     "start": "webpack-dev-server --config ./webpack.config.js --port 3000",
+    "build:link": "ln -sf $(pwd)/dist $(pwd)/example-static/dist",
     "build": "yarn run clean_dev && NODE_ENV=development webpack",
-    "build:prod": "yarn run clean_prod && NODE_ENV=production webpack -p --config webpack.config.prod.js"
+    "build:prod": "yarn run clean_prod && NODE_ENV=production webpack --config webpack.config.prod.js && yarn run build:link",
+    "stats": "NODE_ENV=production webpack --config webpack.config.prod.js --profile --json > ./dist/stats.prod.json",
+    "stats:electrify": "yarn run stats && electrify ./dist/stats.prod.json > ./dist/stats.html && open ./dist/stats.html"
   },
   "dependencies": {
     "moment": "^2.17.1",
@@ -26,7 +29,10 @@
     "babel-preset-stage-0": "^6.16.0",
     "css-loader": "^0.26.1",
     "extract-text-webpack-plugin": "v2.0.0-beta.4",
+    "html-webpack-plugin": "^2.24.1",
+    "inline-manifest-webpack-plugin": "^3.0.1",
     "node-sass": "^3.13.0",
+    "offline-plugin": "^4.5.3",
     "sass-loader": "^4.0.2",
     "style-loader": "^0.13.1",
     "webpack": "2.1.0-beta.27",

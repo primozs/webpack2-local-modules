@@ -1,21 +1,26 @@
 const path = require('path');
 const webpack = require('webpack');
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin');
+const OfflinePlugin = require('offline-plugin');
 
 module.exports = {
+  devtool: 'source-map',
+  context: path.resolve('src'),
   entry: {
     app: [
-      path.join(__dirname, './src/app.js')
+      './app.js'
     ],
     vendor: [
       'react',
-      'react-dom',
-      'moment'
+      'react-dom'
     ]
   },
   output: {
-    path: path.join(__dirname, 'dist'),
-    filename: 'app.min.js'
+    path: path.resolve('dist'),
+    filename: '[name].[chunkhash].js',
+    publicPath: '/'
   },
   module: {
     loaders: [
@@ -30,9 +35,6 @@ module.exports = {
             require.resolve('babel-preset-react'),
             require.resolve('babel-preset-react-optimize'),
             require.resolve('babel-preset-stage-0')
-          ],
-          ignore: [
-            '/node_modules/'
           ]
         }
       },
@@ -46,10 +48,15 @@ module.exports = {
     ]
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify('production'),
+        'CLIENT': JSON.stringify('true')
+      }
+    }),
+    new InlineManifestWebpackPlugin(),
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks: Infinity,
-      filename: 'vendor.js',
+      name: ['vendor', 'manifest']
     }),
     new webpack.LoaderOptionsPlugin({
       minimize: true,
@@ -73,9 +80,14 @@ module.exports = {
       },
     }),
     new ExtractTextPlugin({
-      filename: '[name].css',
+      filename: '[name].[chunkhash].css',
       disable: false
     }),
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, 'src/public/prod.html'),
+      chunksSortMode: 'dependency'
+    }),
+    new OfflinePlugin()
   ],
   resolve: {
     modules: [
@@ -85,4 +97,3 @@ module.exports = {
     ]
   }
 };
-
