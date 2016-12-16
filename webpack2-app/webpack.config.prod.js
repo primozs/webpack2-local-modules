@@ -6,7 +6,7 @@ const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin');
 const OfflinePlugin = require('offline-plugin');
 
 module.exports = {
-  devtool: 'source-map',
+  // devtool: 'source-map',
   context: path.resolve('src'),
   entry: {
     app: [
@@ -26,6 +26,7 @@ module.exports = {
     loaders: [
       {
         test: /\.js$/,
+        // exclude: /node_modules\/(?!(vis|moment)\/).*/,
         exclude: /node_modules/,
         loader: 'babel-loader',
         // require.resolve needed for babel-loader
@@ -58,27 +59,6 @@ module.exports = {
     new webpack.optimize.CommonsChunkPlugin({
       name: ['vendor', 'manifest']
     }),
-    new webpack.LoaderOptionsPlugin({
-      minimize: true,
-      debug: false
-    }),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false,
-        screw_ie8: true,
-        conditionals: true,
-        unused: true,
-        comparisons: true,
-        sequences: true,
-        dead_code: true,
-        evaluate: true,
-        if_return: true,
-        join_vars: true,
-      },
-      output: {
-        comments: false
-      },
-    }),
     new ExtractTextPlugin({
       filename: '[name].[chunkhash].css',
       disable: false
@@ -87,7 +67,13 @@ module.exports = {
       template: path.resolve(__dirname, 'src/public/prod.html'),
       chunksSortMode: 'dependency'
     }),
-    new OfflinePlugin()
+    new OfflinePlugin(),
+
+    // Ignore all optional deps of moment.js
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+
+    // bundle fixed locales
+    // new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|sl|de/)
   ],
   resolve: {
     modules: [

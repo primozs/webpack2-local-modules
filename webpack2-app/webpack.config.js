@@ -3,6 +3,9 @@ const webpack = require('webpack');
 
 module.exports = {
   devtool: 'eval',
+  performance: {
+    hints: false
+  },
   context: path.resolve('src'),
   entry: [
     'webpack-dev-server/client?http://localhost:3000',

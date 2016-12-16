@@ -9,7 +9,7 @@
     "start": "webpack-dev-server --config ./webpack.config.js --port 3000",
     "build:link": "ln -sf $(pwd)/dist $(pwd)/example-static/dist",
     "build": "yarn run clean_dev && NODE_ENV=development webpack",
-    "build:prod": "yarn run clean_prod && NODE_ENV=production webpack --config webpack.config.prod.js && yarn run build:link",
+    "build:prod": "yarn run clean_prod && NODE_ENV=production webpack -p --config webpack.config.prod.js && yarn run build:link",
     "stats": "NODE_ENV=production webpack --config webpack.config.prod.js --profile --json > ./dist/stats.prod.json",
     "stats:electrify": "yarn run stats && electrify ./dist/stats.prod.json > ./dist/stats.html && open ./dist/stats.html"
   },
@@ -21,7 +21,7 @@
   "devDependencies": {
     "autoprefixer-loader": "^3.2.0",
     "babel-core": "^6.18.2",
-    "babel-loader": "^6.2.8",
+    "babel-loader": "v6.2.10",
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-react": "^6.16.0",
     "babel-preset-react-hmre": "^1.1.1",
@@ -35,7 +35,7 @@
     "offline-plugin": "^4.5.3",
     "sass-loader": "^4.0.2",
     "style-loader": "^0.13.1",
-    "webpack": "2.1.0-beta.27",
+    "webpack": "v2.2.0-rc.0",
     "webpack-dev-server": "v2.1.0-beta.12"
   }
 }
